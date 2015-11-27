@@ -4,7 +4,7 @@
     Emulates SSH login and executes cli commands as user interactive to network
     devices such as switches, routers etc.
 
-    Copyright (c) Dayong Wang, Dayong Wang997@gmail.com
+    Copyright (c) Dayong Wang, wandering_997@sina.com
     Distributable under the terms of the GNU General Public License
     version 2. Provided with no warranties of any sort.
 
@@ -163,7 +163,7 @@ def uf_login_expect(ssh, timeout, f_out):
     #
     #_____ yes/no | password _____
     #
-    # [root@CNC_HC-NMS-2 bin]# ssh npc@172.22.131.63
+    # [root@SERVER bin]# ssh npc@172.22.131.63
     # The authenticity of host '172.22.131.63 (172.22.131.63)' can't be established.
     # RSA key fingerprint is 9c:9c:e2:41:7d:83:76:80:d5:fa:97:38:da:fe:4d:23.
     # Are you sure you want to continue connecting (yes/no)? yes
@@ -176,7 +176,7 @@ def uf_login_expect(ssh, timeout, f_out):
     #
     #_____ known_hosts _____
     #
-    # [root@CNC_HC-NMS-2 bin]# ssh npc@172.22.131.63
+    # [root@SERVER bin]# ssh npc@172.22.131.63
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     # @    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -190,7 +190,7 @@ def uf_login_expect(ssh, timeout, f_out):
     # Offending key in /root/.ssh/known_hosts:2330
     # RSA host key for 172.22.131.63 has changed and you have requested strict checking.
     # Host key verification failed.
-    # [root@CNC_HC-NMS-2 bin]#
+    # [root@SERVER bin]#
     #
     cmd_out = ''
     try:
@@ -271,19 +271,19 @@ def uf_expect_prompt(ssh, timeout, f_out):
     #
     # Prompt:
     #
-    #       ^MBJ_YF_311-F-02_N7718-1#
-    #       <BJ_YF_305-A-15_CE5810>
-    #       <BJ-YZH-101-1109/1111-LVS-S5500>
-    #       ^@<BJ_YF_311_F-12-13_LVS_S5560>
-    #       BJ-YZH-2-2960S-2016#
-    #       [~BJ_YF_320-I-10_CE5810]
+    #       ^MBJ_XX_311-F-02_N7718-1#
+    #       <BJ_XX_305-A-15_CE5810>
+    #       <BJ-XXX-101-1109/1111-LVS-S5500>
+    #       ^@<BJ_XX_311_F-12-13_LVS_S5560>
+    #       BJ-XXX-2-2960S-2016#
+    #       [~BJ_XX_320-I-10_CE5810]
     #
     # Characters:
     #
     #       < > a-z A-Z 0-9 ~ @ * / _ - [] ()
     #
     # Q: Why put a . after \\n)?
-    # A: Some devices output a prompt likes ^@<BJ_YF_311_F-12-13_LVS_S5560>
+    # A: Some devices output a prompt likes ^@<BJ_XX_311_F-12-13_LVS_S5560>
     #
     prompt = "(\\r|\\n).?[<>a-zA-Z0-9~@\*/_\-\[\]\(\)]+(>|%|#|\\$|\]) *$"
     cmd_out = ''
@@ -397,9 +397,9 @@ def uf_logout(ssh, timeout, f_out, sleep_time, vendor):
 
     cmd_logout = ''
     if vendor == 'cisco':
-        cmd_logout = 'exit'
+        cmd_logout = 'end\rexit'
     if vendor == 'cisco_nexus':
-        cmd_logout = 'exit'
+        cmd_logout = 'end\rexit'
     if vendor == 'h3c':
         cmd_logout = 'quit\rquit\r'
     if vendor == 'huawei':
@@ -538,7 +538,7 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     cmd_list = list()
     if not isinstance(cmd, str) or cmd == None or cmd.strip() == '':
         if not isinstance(cmd_prefix, str) or cmd_prefix == None or cmd_prefix.strip() == '':
-            print('[%s] %s:%s Warning: neither --cmd nor --cmd_prefix is specified.\n' % (w_now(), ip, port))
+            print('[%s] %s:%s Warning: neither --cmd nor --cmd_prefix was specified.\n' % (w_now(), ip, port))
         else:
             cmd_list = None
             # Then go to place where vendor was alreay identified.
@@ -618,7 +618,7 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     if l2_sw == 'yes':
         l2_uplink = uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor)
 
-    # if cmd_prefix is prefered.
+    # if cmd_prefix was prefered.
     if cmd_list == None:
         cmd_prefix = '%s.cmd.%s' % (cmd_prefix, vendor)
         if not os.path.exists(cmd_prefix):
@@ -776,14 +776,14 @@ if __name__ == '__main__':
         host_list = host.split(',')
     elif host_file != '':
         if not os.path.exists(host_file):
-            print('%s does not exist, please specified host with --host or --host_file.\n' % (host_file))
+            print('%s does not exist, please specify host with --host or --host_file.\n' % (host_file))
             help_and_exit()
 
         f_host = open(host_file)
         host_list = f_host.readlines()
         f_host.close()
     else:
-        print('Please specified host with --host or --host_file.\n')
+        print('Please specify host with --host or --host_file.\n')
         help_and_exit()
 
     host_len = len(host_list)
@@ -797,7 +797,7 @@ if __name__ == '__main__':
             port = ''
         func_args.append([ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, timeout, save, l2_sw])
 
-    # strat multi-threading
+    # Start multi-threading
     w_threading(func_name, func_args, thread)
 
     # exit
