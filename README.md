@@ -1,11 +1,14 @@
 # w-sw-ssh
 
 
+Author
+==============
+Wang Dayong (Email: wandering_997@sina.com, http://weibo.com/wandering997)
+
+
 Depends
 ==============
-
-pexpect     https://pypi.python.org/pypi/pexpect/
-
+pexpect (https://pypi.python.org/pypi/pexpect/)
 
 
 Help
