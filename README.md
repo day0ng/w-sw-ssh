@@ -1,5 +1,16 @@
 # w-sw-ssh
 
+
+Depends
+==============
+
+pexpect     https://pypi.python.org/pypi/pexpect/
+
+
+
+Help
+==============
+
 [root@TEST w-sw-ssh]# w-sw-ssh.py
 
 Usage:  w-sw-ssh.py <options>
