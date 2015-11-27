@@ -1,5 +1,5 @@
-# w-sw-ssh
 
+[root@TEST w-sw-ssh]#
 [root@TEST w-sw-ssh]# w-sw-ssh.py
 
 Usage:  w-sw-ssh.py <options>
@@ -52,6 +52,60 @@ Example:
     w-sw-ssh.py --uid npc -p --host_file ~/ip.test --cmd_prefix ~/cmd.test
 
 
-[root@TEST w-sw-ssh]# 
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# w-sw-ssh.py --uid npc -p --host 192.168.161.10 --cmd "disp users"
+Password:
+
+[2015-11-27 19:46:37] ssh -p 22 -l npc 192.168.161.10 (pexpect timeout 10s)
+
+npc@192.168.161.10's password:
+
+
+AAA: npc user, you can show
+******************************************************************************
+* Copyright (c) 2004-2015 Hangzhou H3C Tech. Co., Ltd. All rights reserved.  *
+* Without the owner's prior written consent,                                 *
+* no decompiling or reverse-engineering shall be allowed.                    *
+******************************************************************************
+
+<H3C_S5500>
+
+<H3C_S5500>display version | in (Huawei|H3C).*(Software|uptime)
+H3C Comware Platform Software
+H3C S5500-52SC-HI uptime is 35 weeks, 0 day, 19 hours, 21 minutes
+<H3C_S5500>
+
+<H3C_S5500>screen-length disable
+% Screen-length configuration is disabled for current user.
+<H3C_S5500>
+
+<H3C_S5500>disp users
+The user application information of the user interface(s):
+  Idx UI      Delay    Type Userlevel
++ 25  VTY 0   00:00:00 SSH  3
+
+Following are more details.
+VTY 0   :
+        User name: npc
+        Location: 172.16.140.12
+ +    : Current operation user.
+ F    : Current operation user work in async mode.
+<H3C_S5500>
+
+
+=======================================
+Device:     192.168.161.10
+Vendor:     h3c
+Model:      S5500-52SC-HI
+L2_Uplink:
+Commands:
+    1) disp users
+
+
+
+
+[root@TEST w-sw-ssh]#
+
 
 

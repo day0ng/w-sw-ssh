@@ -1,5 +1,5 @@
-# w-sw-ssh
 
+[root@TEST w-sw-ssh]#
 [root@TEST w-sw-ssh]# w-sw-ssh.py
 
 Usage:  w-sw-ssh.py <options>
@@ -52,6 +52,5 @@ Example:
     w-sw-ssh.py --uid npc -p --host_file ~/ip.test --cmd_prefix ~/cmd.test
 
 
-[root@TEST w-sw-ssh]# 
-
+[root@TEST w-sw-ssh]#
 
