@@ -1,4 +1,5 @@
 # w-sw-ssh
+This is a simple tool to execute multiple commands on network device, such as router and switch, and it supports Cisco Catalyst, Cisco Nexus, Huawei and H3C.
 
 
 Author
