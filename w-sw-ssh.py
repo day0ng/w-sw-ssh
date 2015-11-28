@@ -45,13 +45,13 @@ Usage:  %s <options>
 
     -p                          Get password from user input
 
-    --host <ip[:port],...>      IP:Port list of remote ssh server, default port is 22
+    --host <ip[:port],...>      ip[:port] list of remote ssh server, default port is 22
 
-    --host_file <file_name>     A filename of ip[:port] list
+    --host_file <file_name>     File of ip[:port] list
 
     --cmd <cmd1;cmd2;...>       Command list to execute on remote ssh server
 
-    --cmd_prefix <file_prefix>  A prefix of command list file. For example:
+    --cmd_prefix <file_prefix>  Prefix of command list files. For example:
                                     test.cmd.cisco
                                     test.cmd.cisco_nexus
                                     test.cmd.h3c
