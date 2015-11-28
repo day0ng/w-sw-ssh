@@ -282,7 +282,7 @@ def uf_expect_prompt(ssh, timeout, f_out):
     #
     #       < > a-z A-Z 0-9 ~ @ * / _ - [] ()
     #
-    # Q: Why put a . after \\n)?
+    # Q: Why put a . next to \\n)?
     # A: Some devices output a prompt likes ^@<BJ_XX_311_F-12-13_LVS_S5560>
     #
     prompt = "(\\r|\\n).?[<>a-zA-Z0-9~@\*/_\-\[\]\(\)]+(>|%|#|\\$|\]) *$"
