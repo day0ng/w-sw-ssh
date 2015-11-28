@@ -40,25 +40,25 @@ Password:
 
 AAA: npc user, you can show
 
-bj-b28-2-baidu-2960g-2735#
-bj-b28-2-baidu-2960g-2735#$sion | in (Huawei|H3C).*(Software|uptime)
+2960G#
+2960G#$sion | in (Huawei|H3C).*(Software|uptime)
                              ^
 % Invalid input detected at '^' marker.
 
-bj-b28-2-baidu-2960g-2735#
-bj-b28-2-baidu-2960g-2735#$n | in Cisco.*Software|cisco.*(Chassis|processor)
+2960G#
+2960G#$n | in Cisco.*Software|cisco.*(Chassis|processor)
 Cisco IOS Software, C2960S Software (C2960S-UNIVERSALK9-M), Version 12.2(55)SE3, RELEASE SOFTWARE (fc1)
 cisco WS-C2960S-48TS-L (PowerPC) processor (revision F0) with 131072K bytes of memory.
-bj-b28-2-baidu-2960g-2735#
-bj-b28-2-baidu-2960g-2735#terminal length 0
-bj-b28-2-baidu-2960g-2735#
-bj-b28-2-baidu-2960g-2735#show users
+2960G#
+2960G#terminal length 0
+2960G#
+2960G#show users
     Line       User       Host(s)              Idle       Location
 *  1 vty 0     npc        idle                 00:00:00 localhost
 
   Interface      User        Mode                     Idle     Peer Address
 
-bj-b28-2-baidu-2960g-2735#
+2960G#
 
 =======================================
 Device:     192.168.128.180
@@ -81,15 +81,15 @@ AAA: npc user, you can show
 * no decompiling or reverse-engineering shall be allowed.                    *
 ******************************************************************************
 
-<BJ_HuangCun_3_22-JG-305_S5500>
-<BJ_HuangCun_3_22-JG-305_S5500>display version | in (Huawei|H3C).*(Software|uptime)
+<H3C_S5500>
+<H3C_S5500>display version | in (Huawei|H3C).*(Software|uptime)
 H3C Comware Platform Software
 H3C S5500-52SC-HI uptime is 35 weeks, 1 day, 11 hours, 52 minutes
-<BJ_HuangCun_3_22-JG-305_S5500>
-<BJ_HuangCun_3_22-JG-305_S5500>screen-length disable
+<H3C_S5500>
+<H3C_S5500>screen-length disable
 % Screen-length configuration is disabled for current user.
-<BJ_HuangCun_3_22-JG-305_S5500>
-<BJ_HuangCun_3_22-JG-305_S5500>disp users
+<H3C_S5500>
+<H3C_S5500>disp users
 The user application information of the user interface(s):
   Idx UI      Delay    Type Userlevel
 + 25  VTY 0   00:00:00 SSH  3
@@ -100,7 +100,7 @@ VTY 0   :
         Location: 172.16.140.12
  +    : Current operation user.
  F    : Current operation user work in async mode.
-<BJ_HuangCun_3_22-JG-305_S5500>
+<H3C_S5500>
 
 =======================================
 Device:     192.168.161.10
