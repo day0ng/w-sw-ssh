@@ -1,0 +1,116 @@
+
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# ls -l
+total 16
+-rw-r--r-- 1 root root 11 Nov 27 20:10 show_users.cmd.cisco
+-rw-r--r-- 1 root root 11 Nov 27 20:10 show_users.cmd.cisco_nexus
+-rw-r--r-- 1 root root 11 Nov 27 20:10 show_users.cmd.h3c
+-rw-r--r-- 1 root root 11 Nov 27 20:10 show_users.cmd.huawei
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# w-sw-ssh.py --uid npc -p --host 192.168.161.10,192.168.128.180 --cmd_prefix ./show_users --log_dir ./test
+Password:
+
+[2015-11-28 12:18:03] ssh -p 22 -l npc 192.168.128.180 (pexpect timeout 10s)
+
+[2015-11-28 12:18:03] ssh -p 22 -l npc 192.168.161.10 (pexpect timeout 10s)
+
+
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# ls -l
+total 20
+-rw-r--r-- 1 root root   11 Nov 27 20:10 show_users.cmd.cisco
+-rw-r--r-- 1 root root   11 Nov 27 20:10 show_users.cmd.cisco_nexus
+-rw-r--r-- 1 root root   11 Nov 27 20:10 show_users.cmd.h3c
+-rw-r--r-- 1 root root   11 Nov 27 20:10 show_users.cmd.huawei
+drwxr-xr-x 2 root root 4096 Nov 28 12:18 test
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# ls -l test/
+total 8
+-rw-r--r-- 1 root root 1349 Nov 28 12:18 192.168.128.180
+-rw-r--r-- 1 root root 1413 Nov 28 12:18 192.168.161.10
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# cat test/192.168.128.180
+AAA Service of bj_office (172.16.140.12)
+Password:
+
+AAA: npc user, you can show
+
+bj-b28-2-baidu-2960g-2735#
+bj-b28-2-baidu-2960g-2735#$sion | in (Huawei|H3C).*(Software|uptime)
+                             ^
+% Invalid input detected at '^' marker.
+
+bj-b28-2-baidu-2960g-2735#
+bj-b28-2-baidu-2960g-2735#$n | in Cisco.*Software|cisco.*(Chassis|processor)
+Cisco IOS Software, C2960S Software (C2960S-UNIVERSALK9-M), Version 12.2(55)SE3, RELEASE SOFTWARE (fc1)
+cisco WS-C2960S-48TS-L (PowerPC) processor (revision F0) with 131072K bytes of memory.
+bj-b28-2-baidu-2960g-2735#
+bj-b28-2-baidu-2960g-2735#terminal length 0
+bj-b28-2-baidu-2960g-2735#
+bj-b28-2-baidu-2960g-2735#show users
+    Line       User       Host(s)              Idle       Location
+*  1 vty 0     npc        idle                 00:00:00 localhost
+
+  Interface      User        Mode                     Idle     Peer Address
+
+bj-b28-2-baidu-2960g-2735#
+
+=======================================
+Device:     192.168.128.180
+Vendor:     cisco
+Model:      WS-C2960S-48TS-L
+L2_Uplink:
+Commands:
+    1) show users
+
+
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]# cat test/192.168.161.10
+npc@192.168.161.10's password:
+
+AAA: npc user, you can show
+******************************************************************************
+* Copyright (c) 2004-2015 Hangzhou H3C Tech. Co., Ltd. All rights reserved.  *
+* Without the owner's prior written consent,                                 *
+* no decompiling or reverse-engineering shall be allowed.                    *
+******************************************************************************
+
+<BJ_HuangCun_3_22-JG-305_S5500>
+<BJ_HuangCun_3_22-JG-305_S5500>display version | in (Huawei|H3C).*(Software|uptime)
+H3C Comware Platform Software
+H3C S5500-52SC-HI uptime is 35 weeks, 1 day, 11 hours, 52 minutes
+<BJ_HuangCun_3_22-JG-305_S5500>
+<BJ_HuangCun_3_22-JG-305_S5500>screen-length disable
+% Screen-length configuration is disabled for current user.
+<BJ_HuangCun_3_22-JG-305_S5500>
+<BJ_HuangCun_3_22-JG-305_S5500>disp users
+The user application information of the user interface(s):
+  Idx UI      Delay    Type Userlevel
++ 25  VTY 0   00:00:00 SSH  3
+
+Following are more details.
+VTY 0   :
+        User name: npc
+        Location: 172.16.140.12
+ +    : Current operation user.
+ F    : Current operation user work in async mode.
+<BJ_HuangCun_3_22-JG-305_S5500>
+
+=======================================
+Device:     192.168.161.10
+Vendor:     h3c
+Model:      S5500-52SC-HI
+L2_Uplink:
+Commands:
+    1) disp users
+
+
+[root@TEST w-sw-ssh]#
+[root@TEST w-sw-ssh]#
+
