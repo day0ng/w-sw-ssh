@@ -92,8 +92,9 @@ Example:
 
 
 
-def w_now():
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))      # return string
+def w_time(time_format = '%Y-%m-%d %H:%M:%S'):
+
+    return time.strftime(time_format, time.localtime(time.time()))
 
 
 
@@ -249,12 +250,12 @@ def uf_ssh_login(ssh, timeout, output_file, f_out, ip, port, uid, pwd, sleep_tim
     idx, cmd_out = uf_login_expect(ssh, timeout, f_out)             # login expect
     # login error
     if idx == -1:
-        print('[%s] %s:%s Error: uid <%s> login failed (1)' % (w_now(), ip, port, uid))
+        print('[%s] %s:%s Error: uid <%s> login failed (1)' % (w_time(), ip, port, uid))
         return False
     # wrong known_hosts
     if idx == 2:
         uf_login_fix_known_hosts(cmd_out) 
-        print('[%s] %s:%s Error: Host key was fixed and try again.' % (w_now(), ip, port))
+        print('[%s] %s:%s Error: Host key was fixed and try again.' % (w_time(), ip, port))
         return False
     # ask for yes/no
     if idx == 1:
@@ -321,7 +322,7 @@ def uf_get_vendor_model(ssh, timeout, f_out, sleep_time):
     tmp_cmd = 'display version | in (Huawei|H3C).*(Software|uptime)'
     idx, cmd_out = uf_expect_sendline(ssh, timeout, f_out, sleep_time, tmp_cmd)
     if idx == 1:
-        print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
         return [vendor, model]
     if re.search('% Invalid|Unrecognized command', cmd_out) == None:
         if cmd_out.find('H3C ') >= 0:
@@ -337,7 +338,7 @@ def uf_get_vendor_model(ssh, timeout, f_out, sleep_time):
         tmp_cmd = 'show version | in Cisco.*Software|cisco.*(Chassis|processor)'
         idx, cmd_out = uf_expect_sendline(ssh, timeout, f_out, sleep_time, tmp_cmd)
         if idx == 1:
-            print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+            print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
             return [vendor, model]
         if cmd_out.find('Cisco Nexus ') >= 0:
             vendor = 'cisco_nexus'
@@ -441,7 +442,7 @@ def uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor):
     # Get gateway IP
     idx, cmd_out = uf_expect_sendline(ssh, timeout, f_out, sleep_time, cmd_get_gw_ip)
     if idx == 1:
-        print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
         return l2_uplink
     if idx == -1:
         return l2_uplink
@@ -462,7 +463,7 @@ def uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor):
     cmd_get_gw_mac = re.sub('_IP_', gw_ip, cmd_get_gw_mac)
     idx, cmd_out = uf_expect_sendline(ssh, timeout, f_out, sleep_time, cmd_get_gw_mac)
     if idx == 1:
-        print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
         return l2_uplink
     if idx == -1:
         return l2_uplink
@@ -483,7 +484,7 @@ def uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor):
     cmd_get_gw_uplink = re.sub('_MAC_', gw_mac, cmd_get_gw_uplink)
     idx, cmd_out = uf_expect_sendline(ssh, timeout, f_out, sleep_time, cmd_get_gw_uplink)
     if idx == 1:
-        print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
         return l2_uplink
     if idx == -1:
         return l2_uplink
@@ -521,24 +522,24 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     #_________ start of arguments init _________
     # arg: ip
     if not isinstance(ip, str) or ip.strip() == '':
-        print('[%s] Error: incorrect IP address <%s>' % (w_now(), ip))
+        print('[%s] Error: incorrect IP address <%s>' % (w_time(), ip))
         return False
     # arg: port
     if not isinstance(port, str) or port.strip() == '':
         port = '22'
     # arg: uid
     if not isinstance(uid, str) or uid.strip() == '':
-        print('[%s] %s:%s Error: incorrect UID' % (w_now(), ip, port))
+        print('[%s] %s:%s Error: incorrect UID' % (w_time(), ip, port))
         return False
     # arg: pwd
     if not isinstance(pwd, str) or pwd.strip() == '':
-        print('[%s] %s:%s Error: incorrect PWD' % (w_now(), ip, port))
+        print('[%s] %s:%s Error: incorrect PWD' % (w_time(), ip, port))
         return False
     # arg: cmd, cmd_prefix
     cmd_list = list()
     if not isinstance(cmd, str) or cmd == None or cmd.strip() == '':
         if not isinstance(cmd_prefix, str) or cmd_prefix == None or cmd_prefix.strip() == '':
-            print('[%s] %s:%s Warning: neither --cmd nor --cmd_prefix was specified.\n' % (w_now(), ip, port))
+            print('[%s] %s:%s Warning: neither --cmd nor --cmd_prefix was specified.\n' % (w_time(), ip, port))
         else:
             cmd_list = None
             # Then go to place where vendor was alreay identified.
@@ -561,13 +562,13 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
             try:
                 sys_cmd('mkdir -p %s' % (output_path))
             except:
-                print('[%s] %s:%s Error: mkdir %s failed!' % (w_now(), ip, port, output_path))
+                print('[%s] %s:%s Error: mkdir %s failed!' % (w_time(), ip, port, output_path))
                 return False
         if os.path.exists(output_path):
             try:
                 f_out = open(output_file, 'w')
             except:
-                print('[%s] %s:%s Error: file %s is failed to open.' % (w_now(), ip, port, output_file))
+                print('[%s] %s:%s Error: file %s is failed to open.' % (w_time(), ip, port, output_file))
                 return False
         else:
             output_file = ''
@@ -588,11 +589,11 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
 
     # Login - ssh
     try:
-        print('[%s] ssh -p %s -l %s %s (pexpect timeout %ss)\n' % (w_now(), port, uid, ip, str(timeout)))
+        print('[%s] ssh -p %s -l %s %s (pexpect timeout %ss)\n' % (w_time(), port, uid, ip, str(timeout)))
         ssh = pexpect.spawn('ssh -p %s -l %s %s' % (port, uid, ip))
         time.sleep(sleep_time)
     except:
-        print('[%s] %s:%s Error: ssh failed' % (w_now(), ip, port))
+        print('[%s] %s:%s Error: ssh failed' % (w_time(), ip, port))
         return False
     if not uf_ssh_login(ssh, timeout, output_file, f_out, ip, port, uid, pwd, sleep_time):
         return False
@@ -601,16 +602,16 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     # Get vendor and model
     vendor, model = uf_get_vendor_model(ssh, timeout, f_out, sleep_time)
     if vendor == '':
-        print("[%s] %s:%s Error: can not get device vendor." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: can not get device vendor." % (w_time(), ip, port))
         return False
     if model == '':
-        print("[%s] %s:%s Error: can not get device type." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: can not get device type." % (w_time(), ip, port))
         return False
 
     # Set no-more
     idx, cmd_out = uf_set_nomore(ssh, timeout, f_out, sleep_time, vendor)
     if idx == 1:
-        print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+        print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
         return False
 
     # Get l2-uplink
@@ -622,7 +623,7 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     if cmd_list == None:
         cmd_prefix = '%s.cmd.%s' % (cmd_prefix, vendor)
         if not os.path.exists(cmd_prefix):
-            print('[%s] %s:%s Error: %s does not exist.\n' % (w_now(), ip, port, cmd_prefix))
+            print('[%s] %s:%s Error: %s does not exist.\n' % (w_time(), ip, port, cmd_prefix))
             return False
         f_cmd = open(cmd_prefix)
         cmd_list = f_cmd.readlines()
@@ -639,10 +640,10 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
         try:
             idx, cmd_out = uf_expect_sendline(ssh, timeout, f_out, sleep_time, cmd_line)
             if idx == 1:
-                print("[%s] %s:%s Error: pexpect timed out." % (w_now(), ip, port))
+                print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
                 return False
         except:
-            print('\n[%s] %s:%s Error: command %s is failed to be executed.' % (w_now(), ip, port, cmd_list[i].strip()))
+            print('\n[%s] %s:%s Error: command %s is failed to be executed.' % (w_time(), ip, port, cmd_list[i].strip()))
 
     # Save config
     if save == 'yes':
@@ -651,10 +652,10 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
         idx, cmd_out = uf_save(ssh, timeout, f_out, sleep_time, vendor)
         cmd_all = '%s\n%s) %s' % (cmd_all, str(cmd_idx).rjust(5), '[Save Config]')
         if idx == 1:
-            print("[%s] %s:%s Error: save config timed out." % (w_now(), ip, port))
+            print("[%s] %s:%s Error: save config timed out." % (w_time(), ip, port))
             return False
         if idx == -1:
-            print("[%s] %s:%s Error: save config failed." % (w_now(), ip, port))
+            print("[%s] %s:%s Error: save config failed." % (w_time(), ip, port))
 
     # Logout
     uf_logout(ssh, timeout, f_out, sleep_time, vendor)
