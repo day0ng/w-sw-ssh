@@ -14,6 +14,10 @@
     creates by Dayong Wang:
     - Just remove some unnecessary information.
 
+    2016/10/11
+    bug fix by Dayong Wang:
+    - Exit while password is wrong and ask for input again.
+
     Last commit info:
     ~~~~~~~~~~~~~~~~~
     $LastChangedDate: $
@@ -356,8 +360,8 @@ def uf_get_vendor_model(ssh, timeout, f_out, sleep_time):
         if re.search(reg_vendor_search, tmp_row, re.IGNORECASE) == None:
             continue
         else:
-            model = re.sub(reg_vendor_sub, '', tmp_row, 0, re.IGNORECASE)
-            model = re.sub('^(cisco nexus|cisco|h3c|huawei) *', '', model, 0, re.IGNORECASE)
+            model = re.sub(reg_vendor_sub, '', tmp_row, re.IGNORECASE)
+            model = re.sub('^(cisco nexus|cisco|h3c|huawei) *', '', model, re.IGNORECASE)
             break 
     # Return
     return [vendor, model]
@@ -589,7 +593,7 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
 
     # Login - ssh
     try:
-        print('[%s] ssh -p %s -l %s %s (pexpect timeout %ss)\n' % (w_time(), port, uid, ip, str(timeout)))
+        print('[%s] ssh -p %s -l %s %s' % (w_time(), port, uid, ip))
         ssh = pexpect.spawn('ssh -p %s -l %s %s' % (port, uid, ip))
         time.sleep(sleep_time)
     except:
@@ -598,6 +602,8 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     if not uf_ssh_login(ssh, timeout, output_file, f_out, ip, port, uid, pwd, sleep_time):
         return False
     idx, cmd_out = uf_expect_prompt(ssh, timeout, f_out)
+    if idx != 0:
+        return False
 
     # Get vendor and model
     vendor, model = uf_get_vendor_model(ssh, timeout, f_out, sleep_time)
@@ -804,6 +810,5 @@ if __name__ == '__main__':
     # exit
     print('')
     sys.exit()
-
 
 
