@@ -115,13 +115,13 @@ def sys_cmd(str_cmd):
 def w_threading(func_name, func_args, max_thread):
 
     # multi threading
-    if func_name == None or func_name == '':
+    if func_name is None or func_name == '':
         print('w_threading() error: func_name is empty.\n')
         return False
-    if func_args == None or not isinstance(func_args, list):
+    if func_args is None or not isinstance(func_args, list):
         print('w_threading() error: func_args is wrong.\n')
         return False
-    if not isinstance(max_thread, int) or max_thread == None or max_thread == '':
+    if not isinstance(max_thread, int) or max_thread is None or max_thread == '':
         max_thread = 1000
 
     # create thread pool
@@ -135,7 +135,7 @@ def w_threading(func_name, func_args, max_thread):
     if thread_count > max_thread:
         i_begin = 0
         i_end = 0
-        round_num = thread_count / max_thread
+        round_num = int(thread_count / max_thread)
         if thread_count % max_thread > 0:
             round_num += 1
         # max_thread: How many threads (test) could be executed at one time
@@ -201,7 +201,7 @@ def uf_login_expect(ssh, timeout, f_out):
     try:
         idx = ssh.expect(['(P|p)assword: $', '\(yes/no\)\?', 'Host key verification failed'], timeout=timeout)
         cmd_out = '%s%s' % (ssh.before, ssh.after)
-        if f_out == None:
+        if f_out is None:
             print(cmd_out)
         else:
             f_out.write(cmd_out)
@@ -216,7 +216,7 @@ def uf_login_fix_known_hosts(cmd_out):
     tmp_out = cmd_out.split("\n")
     for tmp_row in tmp_out:
         # Offending key in /root/.ssh/known_hosts:2330
-        if re.search('known_hosts:[0-9]+', tmp_row, re.IGNORECASE) == None:
+        if re.search('known_hosts:[0-9]+', tmp_row, re.IGNORECASE) is None:
             continue
         tmp_row = re.sub('^.* /', '/', tmp_row).strip()
         tmp_hosts, tmp_line = tmp_row.split(':')
@@ -295,7 +295,7 @@ def uf_expect_prompt(ssh, timeout, f_out):
     try:
         idx = ssh.expect([prompt, pexpect.TIMEOUT], timeout=timeout)
         cmd_out = '%s%s' % (ssh.before, ssh.after)
-        if f_out == None:
+        if f_out is None:
             print(cmd_out)
         else:
             f_out.write(cmd_out)
@@ -328,7 +328,7 @@ def uf_get_vendor_model(ssh, timeout, f_out, sleep_time):
     if idx == 1:
         print("[%s] %s:%s Error: pexpect timed out." % (w_time(), ip, port))
         return [vendor, model]
-    if re.search('% Invalid|Unrecognized command', cmd_out) == None:
+    if re.search('% Invalid|Unrecognized command', cmd_out) is None:
         if cmd_out.find('H3C ') >= 0:
             vendor = '%s%s' % (vendor, 'h3c')
             reg_vendor_search = '^h3c.*uptime'
@@ -357,7 +357,7 @@ def uf_get_vendor_model(ssh, timeout, f_out, sleep_time):
     tmp_out = cmd_out.split('\n')
     for tmp_row in tmp_out:
         tmp_row = tmp_row.strip()
-        if re.search(reg_vendor_search, tmp_row, re.IGNORECASE) == None:
+        if re.search(reg_vendor_search, tmp_row, re.IGNORECASE) is None:
             continue
         else:
             model = re.sub(reg_vendor_sub, '', tmp_row, re.IGNORECASE)
@@ -455,7 +455,7 @@ def uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor):
     for tmp_row in tmp_out:
         tmp_row = tmp_row.strip()
         tmp_re = re.search(reg_get_gw_ip_search, tmp_row, re.IGNORECASE)
-        if tmp_re == None:
+        if tmp_re is None:
             continue
         else:
             gw_ip = tmp_re.group(0).strip()
@@ -476,7 +476,7 @@ def uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor):
     for tmp_row in tmp_out:
         tmp_row = tmp_row.strip()
         tmp_re = re.search(reg_get_gw_mac_search, tmp_row, re.IGNORECASE)
-        if tmp_re == None:
+        if tmp_re is None:
             continue
         else:
             gw_mac = tmp_re.group(0).strip()
@@ -499,7 +499,7 @@ def uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor):
         if re.search(cmd_get_gw_uplink, tmp_row) != None:
             continue
         tmp_re = re.search(reg_get_gw_mac_search, tmp_row, re.IGNORECASE)
-        if tmp_re == None:
+        if tmp_re is None:
             continue
         else:
             l2_uplink = re.sub('^.*%s' % (gw_mac), '', tmp_row).strip()
@@ -541,8 +541,8 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
         return False
     # arg: cmd, cmd_prefix
     cmd_list = list()
-    if not isinstance(cmd, str) or cmd == None or cmd.strip() == '':
-        if not isinstance(cmd_prefix, str) or cmd_prefix == None or cmd_prefix.strip() == '':
+    if not isinstance(cmd, str) or cmd is None or cmd.strip() == '':
+        if not isinstance(cmd_prefix, str) or cmd_prefix is None or cmd_prefix.strip() == '':
             print('[%s] %s:%s Warning: neither --cmd nor --cmd_prefix was specified.\n' % (w_time(), ip, port))
         else:
             cmd_list = None
@@ -557,7 +557,8 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
     if sleep_time <= 0:
         sleep_time = 0.5
     # arg: log_dir
-    if not isinstance(log_dir, str) or log_dir == None or log_dir.strip() == '':
+    f_out = None
+    if not isinstance(log_dir, str) or log_dir is None or log_dir.strip() == '':
         output_file = ''
     else:
         output_file = '%s/%s' % (log_dir, ip)
@@ -626,7 +627,7 @@ def w_main(ip, port, uid, pwd, cmd, cmd_prefix, cmd_interval, log_dir, flt_timeo
         l2_uplink = uf_get_l2_uplink(ssh, timeout, f_out, sleep_time, vendor)
 
     # if cmd_prefix was prefered.
-    if cmd_list == None:
+    if cmd_list is None:
         cmd_prefix = '%s.cmd.%s' % (cmd_prefix, vendor)
         if not os.path.exists(cmd_prefix):
             print('[%s] %s:%s Error: %s does not exist.\n' % (w_time(), ip, port, cmd_prefix))
@@ -676,7 +677,7 @@ L2_Uplink:  %s
 Commands:   %s
 
     \r\n''' % (ip, vendor, model, l2_uplink, cmd_all)
-    if f_out == None:
+    if f_out is None:
         print(the_end)
     else:
         f_out.write(the_end)
@@ -778,6 +779,7 @@ if __name__ == '__main__':
     # func_args
     func_args = list()
 
+    host_list = list()
     print('')
     if host != '':
         host_list = host.split(',')
